@@ -28,6 +28,11 @@ function skew(img, pts) {
 
     var tris = [[0, 1, 2], [2, 3, 0]]; // Split in two triangles?
     var ctx = document.getElementById("canvas").getContext('2d');
+
+    ctx.save();
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0,0,ctx.canvas.width, ctx.canvas.height);
+    ctx.restore();
     for (var t=0; t<2; t++) {
         var pp = tris[t];
         var x0 = corners[pp[0]].x, x1 = corners[pp[1]].x, x2 = corners[pp[2]].x;

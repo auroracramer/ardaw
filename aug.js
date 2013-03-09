@@ -38,6 +38,7 @@ function init() {
         navigator.webkitGetUserMedia({video: true, audio: false}, onSuccess, onError);
         
         prevCorners = null;
+        img = document.getElementById("panda");
         detector = new AR.Detector();
         requestAnimationFrame(tick);
 
@@ -68,5 +69,10 @@ function drawPicture(markers) {
         for (i = 0; i !== markers.length; i++) {
             skew(img, markers[i].corners);
         }
+    } else {
+        context.save();
+        context.setTransform(1,0,0,1,0,0);
+        context.clearRect(0,0,canvas.width,canvas.height);
+        context.restore();
     }
 }
