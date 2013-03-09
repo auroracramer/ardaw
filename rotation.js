@@ -3,58 +3,44 @@ var getRotation = function(points) {
     // between the top two points, and the angle between the bottom
     // two points and averaging them together.
 
+    // Points start from the top left and go CW
+
     // Get the difference vectors of the points
     var x01 = points[1].x - points[0].x;
     var y01 = points[1].y - points[0].y;
-    var x23 = points[3].x - points[2].x;
-    var y23 = points[3].y - points[3].y;
-
+    var x32 = points[2].x - points[3].x;
+    var y32 = points[2].y - points[3].y;
     
     var getTwoPointAngle = function(xdiff, ydiff) {
-        // Calculate the angle between two points (CC is positive)
-
-        var theta = 0;
-        // So we don't divide by zero
-        if ( xdiff === 0 ) {
-            if ( ydiff < 0 ) {
-                theta = 270;
-            } else {
-                theta = 90;
-            }
-        } else if ( xdiff > 0 ) {
-            if ( ydiff < 0 ) {
-                theta = 360 - Math.atan2(ydiff,xdiff);
-            } else {
-                theta = Math.atan2(ydiff,xdiff);
-            }
-        } else {
-            if ( ydiff < 0 ) {
-                theta = 180 + Math.atan2(ydiff,xdiff);
-            } else {
-                theta = 90 + Math.atan2(ydiff,xdiff);
-            }
-        }
-
-        return theta;
+        // Calculate the angle between two points
+        return Math.atan2(ydiff,xdiff);
     };
 
     var theta1 = getTwoPointAngle(x01, y01);
-    var theta2 = getTwoPointAngle(x23, y23);
+    var theta2 = getTwoPointAngle(x32, y32);
 
-    return (theta1 + theta2)/2;
+    var angle = (theta1 + theta2)/2;
+    return fixAngle(angle);
 
 };
 
-var getValue = function(points, max, min) {
-    // Returns the value of a parameter, given the points
-    // the maximum value, and the mininum value
-    // using the rotation of the marker.
+var fixAngle = function(n) {
+    // If the angle is negative, add 2pi
+    if ( n < 0 ) {
+        return n + 2 * Math.PI;
+    } else {
+        return n;
+    }
+};
+
+var getValue = function(points) {
+    // Returns the normalized rotation
 
     // if the min isn't specified, assume it to be zero
-    min = typeof min !== 'undefined' ? min : 0;
+    //min = typeof min !== 'undefined' ? min : 0;
     
     // if the max isn't specified, assume it to be one
-    max = typeof max !== 'undefined' ? max : 1;
+    //max = typeof max !== 'undefined' ? max : 1;
 
-    return (getRotation(points)/360) * (max - min) + min;
+    return getRotation(points)/(2*Math.PI);
 };
