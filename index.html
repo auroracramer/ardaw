@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Augmented Reality</title>
+        <link rel="stylesheet" type="text/css" href="default.css">
+        <script type="text/javascript" src="transform.js"></script>
+        <script type="text/javascript" src="aug.js"></script>
+        <script type="text/javascript" src="js/js-aruco/src/aruco.js"></script>
+        <script type="text/javascript" src="js/js-aruco/src/cv.js"></script>
+    </head>
+    <body onload="init()">
+        <video id="output" autoplay></video>
+        <img src="pandakun.jpg" id="panda"; width="349px"; height="349px"; style="visibility:hidden;position:absolute;left:10px;top:100px;">
+        <canvas id="canvas" style="width:640px; height:480px;"></canvas>
+    </body>
+</html>

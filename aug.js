@@ -52,7 +52,7 @@ function tick() {
         var markers = detector.detect(imageData);
         handleMarkers(markers);
         //onGUI();
-        //drawPicture(markers);
+        drawPicture(markers);
     }
    
     requestAnimationFrame(tick);
@@ -66,18 +66,7 @@ function snapshot() {
 function drawPicture(markers) {
     if(markers && markers.length !== 0) {
         for (i = 0; i !== markers.length; i++) {
-            //skew(img, markers[i].corners);
-            corners = markers[i].corners;
-            console.log(context);
-            context.fillStyle = 'blue';
-            context.font = 'bold 16px Arial';
-            context.fillText('0', corners[0].x, corners[0].y);
-            context.fillText('1', corners[1].x, corners[1].y);
-            context.fillText('2', corners[2].x, corners[2].y);
-            context.fillText('3', corners[3].x, corners[3].y);
+            skew(img, markers[i].corners);
         }
-    }
-    else if (prevCorners) {
-        skew(img, prevCorners);
     }
 }

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+
+        <title>Sound Testing</title>
+        <link rel="stylesheet" type="text/css" href="default.css">
+        <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css">
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script type="text/javascript" src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+        <script type="text/javascript" src="js/js-aruco/src/aruco.js"></script>
+        <script type="text/javascript" src="js/js-aruco/src/cv.js"></script>
+        <script type="text/javascript" src="transform.js"></script>
+        <script type="text/javascript" src="js/timbre.js"></script>
+        <script type="text/javascript" src="soundtest.js"></script>
+        <script type="text/javascript" src="rotation.js"></script>
+        <script type="text/javascript" src="instruments.js"></script>
+        <script type="text/javascript" src="gui.js"></script>
+        <script type="text/javascript" src="markers.js"></script>
+        <script type="text/javascript" src="aug.js"></script>
+        <style>
+            .column { width: 170px; float: left; padding-bottom: 100px; }
+            .portlet { margin: 0 1em 1em 0; }
+            .portlet-header { margin: 0.3em; padding-bottom: 4px; padding-left: 0.2em; }
+            .portlet-header .ui-icon { float: right; }
+            .portlet-content { padding: 0.4em; }
+            .ui-sortable-placeholder { border: 1px dotted black; visibility: visible !important; height: 50px !important; }
+            .ui-sortable-placeholder * { visibility: hidden; }
+        </style>
+        <script>
+            
+        </script>
+    </head>
+    <body onload="init()">
+        <div id="viewport" style="float:left">
+            <video id="output" style="width:320px;height:240px;position:absolute;top:0px;left:0px;" autoplay></video>
+            <canvas id="canvas" style="width:320px;height:240px;position:absolute;top:0px;left:0px;"></canvas>
+        </div>
+        <div id="markers" style="float:left">
+            <center><h3>Markers</h3></center>
+            <center><div id="marker_list" class="column"></center>
+            </div>
+            
+        </div>
+        <div id="instruments" style="float:left">    
+            <div id="instr_list" class="column">
+            </div>
+            <button id="addinstr">Add Instrument</button>
+        </div>
+        
+        <div id="instr_dialog" title="Add Instrument">
+            <ul>
+            </ul>
+        </div>
+        <script>
+            var makeInstrButton = function(el) {
+                var listel = document.createElement('li');
+                var button = document.createElement('button');
+                //var actionString = new String("new Instrument(\'{0}\');").replace("{0}", el) + "$(this).closest(\".ui-dialog-content\").dialog(\"close\"); ";
+                var buttonAction = function() {
+                    new Instrument(el);
+                    $(this).closest(".ui-dialog-content").dialog("close");
+                }
+                button.onclick = buttonAction;
+                button.innerHTML = el;
+                listel.appendChild(button);
+                document.getElementById('instr_dialog').appendChild(listel);
+            };
+            avail_instrs.forEach(makeInstrButton);
+        </script>
+
+        <div id="marker_dialog" title="Register Marker">
+            <ul id="possible_reg">
+            
+            </ul>
+        </div>
+        <script>
+          var setupMarkerDialog = function(id) {
+            var options = document.getElementById('possible_reg');
+            options.innerHTML = "";
+            var makeButton = function(instr, index) {
+                instr.getParameters().forEach(function(param) {
+                    var listel = document.createElement('li');
+                    var button = document.createElement('button');
+                    var buttonAction = function() {
+                        registerMarker(parseInt(id), instr, param);
+                        $(this).closest(".ui-dialog-content").dialog("close");
+                    };
+                    button.onclick = buttonAction;
+                    button.innerHTML = instr.name + ": " + param;
+                    listel.appendChild(button);
+                    options.appendChild(listel);
+                });
+            };
+            instruments.forEach(makeButton);
+          };
+        </script>
+        <script>
+            $( "#instr_dialog" ).dialog({ autoOpen: false });
+            $( "#addinstr" ).click(function() {
+                $( "#instr_dialog" ).dialog( "open" );
+            });
+            $( "#marker_dialog" ).dialog({ autoOpen: false });
+
+
+
+        </script>
+        <script>
+             $( "button" ).button();
+        </script>
+        <img src="pandakun.jpg" id="panda"; width="349px"; height="349px"; style="visibility:hidden;position:absolute;left:10px;top:100px;">
+    </body>
+
+</html>
